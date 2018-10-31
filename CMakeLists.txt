@@ -58,8 +58,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__PELOTONFILE__='\"$(subst ${CMAKE_SOU
 # ---[ Color diagnostics
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-color-diagnostics")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-color-diagnostics")
 endif()
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND

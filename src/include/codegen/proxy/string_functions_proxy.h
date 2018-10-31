@@ -30,6 +30,9 @@ PROXY(StringFunctions) {
   DECLARE_METHOD(Substr);
   DECLARE_METHOD(Repeat);
   DECLARE_METHOD(CompareStrings);
+  DECLARE_METHOD(Upper);
+  DECLARE_METHOD(Lower);
+  DECLARE_METHOD(Concat);
   DECLARE_METHOD(WriteString);
   DECLARE_METHOD(InputString);
 };

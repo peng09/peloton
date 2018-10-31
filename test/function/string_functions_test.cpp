@@ -17,8 +17,8 @@
 #include "common/harness.h"
 
 #include "executor/executor_context.h"
-#include "function/string_functions.h"
 #include "function/old_engine_string_functions.h"
+#include "function/string_functions.h"
 
 using ::testing::NotNull;
 using ::testing::Return;
@@ -347,6 +347,40 @@ TEST_F(StringFunctionsTests, CodegenSubstrTest) {
                                           message.length(), from, len);
   EXPECT_EQ(0, res.length);
   EXPECT_EQ(nullptr, res.str);
+}
+
+TEST_F(StringFunctionsTests, UpperTest) {
+  //-------------- match ---------------- //
+  std::string s1 = "FORBES avenue";
+  const std::string s2 = "FORBES AVENUE";
+  EXPECT_EQ(function::StringFunctions::Upper(GetExecutorContext(), s1.c_str(),
+                                             s1.size()),
+            s2);
+}
+
+TEST_F(StringFunctionsTests, LowerTest) {
+  //-------------- match ---------------- //
+  std::string s1 = "FORBES avenue";
+  const std::string s2 = "forbes avenue";
+  EXPECT_EQ(function::StringFunctions::Lower(GetExecutorContext(), s1.c_str(),
+                                             s1.size()),
+            s2);
+}
+
+TEST_F(StringFunctionsTests, ConcatTest) {
+  //-------------- match ---------------- //
+  std::string concat_str1 = "abc";
+  std::string concat_str2 = "def";
+  std::string concat_str3 = "ghijk";
+  const char *concat_strs[3] = {concat_str1.c_str(), concat_str2.c_str(),
+                                concat_str3.c_str()};
+  uint32_t str_lens[] = {3, 3, 5};
+  const std::string s1 = "abcdefghijk";
+  function::StringFunctions::StrWithLen concated_strs =
+      function::StringFunctions::Concat(GetExecutorContext(), concat_strs,
+                                        str_lens, 3);
+  EXPECT_EQ(concated_strs.length, s1.length());
+  EXPECT_EQ(concated_strs.str, s1);
 }
 
 }  // namespace test

@@ -28,7 +28,7 @@ class ExecutorContext;
 
 namespace type {
 class AbstractPool;
-}  // namespace type;
+}  // namespace type
 
 namespace function {
 
@@ -99,6 +99,18 @@ class StringFunctions {
    */
   static int32_t CompareStrings(const char *str1, uint32_t len1,
                                 const char *str2, uint32_t len2);
+
+  // Upper
+  static char *Upper(executor::ExecutorContext &ctx, const char *str,
+                     const uint32_t len);
+
+  // Lower
+  static char *Lower(executor::ExecutorContext &ctx, const char *str,
+                     const uint32_t len);
+
+  static StrWithLen Concat(executor::ExecutorContext &cxt,
+                           const char **concat_strs, const uint32_t *str_lens,
+                           const uint32_t size);
 
   /**
    * Write the provided variable length object into the target buffer.

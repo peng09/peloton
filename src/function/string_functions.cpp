@@ -14,8 +14,8 @@
 
 #include "common/macros.h"
 #include "executor/executor_context.h"
-#include "type/type_util.h"
 #include "type/abstract_pool.h"
+#include "type/type_util.h"
 
 namespace peloton {
 namespace function {
@@ -225,6 +225,56 @@ uint32_t StringFunctions::Length(
 int32_t StringFunctions::CompareStrings(const char *str1, uint32_t len1,
                                         const char *str2, uint32_t len2) {
   return peloton::type::TypeUtil::CompareStrings(str1, len1, str2, len2);
+}
+
+char *StringFunctions::Upper(executor::ExecutorContext &ctx, const char *str,
+                             uint32_t len) {
+  PELOTON_ASSERT(str != nullptr);
+
+  auto *pool = ctx.GetPool();
+  auto *new_str = reinterpret_cast<char *>(pool->Allocate(len + 1));
+  uint32_t i = 0;
+  while (i < len) {
+    new_str[i] = toupper(str[i]);
+    i++;
+  }
+  new_str[i] = '\0';
+  return new_str;
+}
+
+char *StringFunctions::Lower(executor::ExecutorContext &ctx, const char *str,
+                             uint32_t len) {
+  PELOTON_ASSERT(str != nullptr);
+
+  auto *pool = ctx.GetPool();
+  auto *new_str = reinterpret_cast<char *>(pool->Allocate(len + 1));
+  uint32_t i = 0;
+  while (i < len) {
+    new_str[i] = tolower(str[i]);
+    i++;
+  }
+  new_str[i] = '\0';
+  return new_str;
+}
+
+StringFunctions::StrWithLen StringFunctions::Concat(
+    executor::ExecutorContext &cxt, const char **concat_strs,
+    const uint32_t *str_lens, const uint32_t size) {
+  uint32_t total_size = 0;
+  for (uint32_t i = 0; i < size; i++) {
+    total_size += str_lens[i];
+  }
+
+  auto *pool = cxt.GetPool();
+  auto *new_str = reinterpret_cast<char *>(pool->Allocate(total_size + 1));
+
+  uint32_t current_size = 0;
+  for (uint32_t i = 0; i < size; i++) {
+    PELOTON_MEMCPY(new_str + current_size, concat_strs[i], str_lens[i]);
+    current_size += str_lens[i];
+  }
+  new_str[current_size] = '\0';
+  return StringFunctions::StrWithLen{new_str, total_size};
 }
 
 void StringFunctions::WriteString(const char *data, uint32_t len, char *buf,

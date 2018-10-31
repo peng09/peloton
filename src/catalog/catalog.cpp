@@ -2048,6 +2048,20 @@ void Catalog::InitializeFunctions() {
                          type::TypeId::VARCHAR,
                          {type::TypeId::VARCHAR, type::TypeId::VARCHAR},
                          internal_lang);
+      AddBuiltinFunction(txn,
+                         "upper",
+                         function::BuiltInFuncType{OperatorId::Upper, function::OldEngineStringFunctions::Upper},
+                         "UPPER",
+                         type::TypeId::VARCHAR,
+                         {type::TypeId::VARCHAR},
+                         internal_lang);
+      AddBuiltinFunction(txn,
+                         "lower",
+                         function::BuiltInFuncType{OperatorId::Lower, function::OldEngineStringFunctions::Lower},
+                         "LOWER",
+                         type::TypeId::VARCHAR,
+                         {type::TypeId::VARCHAR},
+                         internal_lang);
       // Trim
       AddBuiltinFunction(txn,
                          "btrim",
